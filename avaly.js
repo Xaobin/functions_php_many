@@ -1,48 +1,106 @@
-/*
-const ccc={"items":[
-{ "id": 1, "name": "AAA", "created_at": "data1" },
-{ "id": 2, "name": "BBB", "created_at": "data2" },
-{ "id": 12, "name": "CCC", "created_at": "data3" },
-{ "id": 13, "name": "DDD", "created_at": "data4" }
-]};
-*/   
+let brands=[ { "id": 4,
+        "name": "Ford",
+        "image": "images/6Qjcmw2CYxui3nBm8KxwBmAmIuK7Y697Y5B6hXDQ.jpg",
+        "created_at": "2023-01-17T14:03:29.000000Z",
+        "updated_at": "2023-01-21T14:57:19.000000Z",
+        "ref_car_models": [
+            {
+                "id": 3,
+                "brand_id": 4,
+                "name": "Ford Ecosport",
+                "image": "images/carmodels/M65igxyfUbsphrh9a0p5cZ3QPQvmYpLe7uF8IOhU.jpg",
+                "doors": 4,
+                "seats": 4,
+                "air_bag": 1,
+                "abs": 1,
+                "created_at": "2023-01-21T18:47:53.000000Z",
+                "updated_at": "2023-01-21T18:47:53.000000Z"
+            },
+            {
+                "id": 4,
+                "brand_id": 4,
+                "name": "Ford ka",
+                "image": "images/carmodels/Y5p1uBKpqNAvSiZqfR2oR1cB1MvtSt0hKVvfOvZh.jpg",
+                "doors": 4,
+                "seats": 4,
+                "air_bag": 1,
+                "abs": 1,
+                "created_at": "2023-01-21T18:48:06.000000Z",
+                "updated_at": "2023-01-21T18:48:06.000000Z"
+            }
+        ]
+    },
+    {
+        "id": 12,
+        "name": "Volks",
+        "image": "images/AmlO3rVPyhH2IR8gOANcYun0zS1dk0sfdQT3IW4Y.png",
+        "created_at": "2023-02-25T19:49:44.000000Z",
+        "updated_at": "2023-02-25T19:49:44.000000Z",
+        "ref_car_models": []
+    },
+    {
+        "id": 13,
+        "name": "Solaris",
+        "image": "images/KTVnplu3KTH6noZ5ufEkJtXWBvDWIQElmDXBJX2X.png",
+        "created_at": "2023-02-25T20:45:16.000000Z",
+        "updated_at": "2023-02-25T20:45:16.000000Z",
+        "ref_car_models": []
+    },
+    {
+        "id": 14,
+        "name": "Dodge",
+        "image": "images/YPuWvf1MtsewI9y2NK6NsDDuG7VjBSWkG2WZsFMG.jpg",
+        "created_at": "2023-02-25T22:00:19.000000Z",
+        "updated_at": "2023-02-25T22:00:19.000000Z",
+        "ref_car_models": []
+    },
+    {
+        "id": 15,
+        "name": "AAA",
+        "image": "images/hIS8575ZHfCx0vozwh7w6UbzdmjiLINq8jalMdPR.png",
+        "created_at": "2023-02-25T23:35:12.000000Z",
+        "updated_at": "2023-02-25T23:35:12.000000Z",
+        "ref_car_models": []
+    }
+];
 
-//ccc.map((item, keyx) => {console.log(item.id); })
-//let jason = `{"result":true, "count":42}`;
-let titles={ id:{title:'ID', typer:'id'},
-               name:{title:'Name', typer:'text'},
-               image:{title:'Image', typer:'image'},
-               created_at:{title:'Created', typer:'date'},
-               operations:{title:'default', typer:'collname'},
-               };
+
 
 let usersx= [ { "id": 1,
-      "first_name": "Robert",
+      "name": "Robert",
       "last_name": "Schwartz",
       "email": "rob23@gmail.com"
     },
     { "id": 2,
-      "first_name": "Lucy",
+      "name": "Lucy",
       "last_name": "Ballmer",
       "email": "lucyb56@gmail.com"
     },
     { "id": 3,
-      "first_name": "Anna",
+      "name": "Anna",
       "last_name": "Smith",
       "email": "annasmith23@gmail.com"
     },
     { "id": 4,
-      "first_name": "Robert",
+      "name": "Robert",
       "last_name": "Brown",
       "email": "bobbrown432@yahoo.com"
     },
     { "id": 5,
-      "first_name": "Roger",
+      "name": "Roger",
       "last_name": "Bacon",
       "email": "rogerbacon12@yahoo.com"
     }
 ];
 
+
+let titles={ id:{title:'ID', typer:'id'},
+               name:{title:'Name', typer:'text'},
+               image:{title:'Image', typer:'image'},
+               created_at:{title:'Created', typer:'date'},
+               ref_car_models:{title:'Reference',typer:'text'},
+               config:{title:'', amountcolls: 1 },
+               };
 
 //
 ///*
@@ -59,43 +117,55 @@ function compareTitles(tfields,keyx){
 
 let neovar=[];
 let elem={};
-var aid=0;
+var nid=0;
 let titlefields = Object.keys(titles);
-usersx.forEach(jobj => {
+brands.forEach(jobj => {
         Object.entries(jobj).forEach(([khey, vall]) => {
-            //console.log(`${key} ${value}`);
-            //console.log(khey+" "+vall);
-            //if (khey==)
-               
-            titlefields.forEach((kk,ii)=>{
-                if (titles[kk].typer=="id")and(titlefields[kk]==khey){
-                    aid=vall;
-                }    
-                if (titlefields[kk]==khey){
+         
+           
+              //console.log(titlefields.length);
+            const inkey = titlefields.includes(khey);
+            if (inkey==true){
+            titlefields.forEach((kk,ii)=>{ //id name,created_at, config
+             
+                //console.log(".."+kk+".."+ii);
+                if ((titles[kk].typer=="id")&&(nid==0))
+                { nid=vall; elem[khey]=vall; } 
+                   
+                if (ii>0)   {
+               // if ( (titlefields.length<ii+1)&&(ii>0) )  {
                     elem[khey]=vall;
+                    
                 }  
-                if (titles[kk].typer=="collname"){
-                 elem[]   
-                }    
+                 
             }); 
-           neovar.push(elem);
-           elem={};
-           //console.log(jobj[khey]);
-            //console.log(jobj.id+" "+jobj.first_name);
-            //if (compareTitles(titlefields,khey)==true ){}    
-        });
-       // if (titlefields.operations.title=="default"){
-       //     elem['operation']=jobj['id'];
-       // }   
-        // Object.entries(elem).forEach(([kk, vv]) => {console.log("____"+kk+" "+vv);  });    
-        console.log(elem);
+           
+          }
         
+        });
+        let tmp=nid;
+        let lele=titles.config.amountcolls;
+        for (var i = 1; i <= lele; i++) {
+            elem['nid']=nid;    
+            if (i>1){ elem['nid'+i]=nid; }
+        }    
+        
+         neovar.push(elem);
+                elem={};
+                nid=0;
+              
+        // Object.entries(elem).forEach(([kk, vv]) => {console.log("____"+kk+" "+vv);  });    
     });
-//*/    
+
+neovar.forEach((ell)=>{ console.log(ell); })
 console.log("-------------------");
+console.log(titles.config.amountcolls);
+
+//*/    
 //jason=JSON.parse(jason);
 //titles=JSON.parse(titles);
 
+//console.log(titlefields[0]); //ret : id
 /*
 - - - - - - - - - - - - - - - - - - -
 titlefields.forEach(function (entry) 
@@ -106,10 +176,10 @@ console.log(titlefields); //return [ 'id', 'name', 'image', 'created_at', 'opera
 - - - - - - - - - - - - - - - - - - -
 */
 
-///*
+/*
  titlefields.forEach((k, i) => {
        // console.log(titles[k]+" ");
-       console.log(titlefields[i]); //ret: id name,created_at, operations
-       //console.log("typer: "+titles[k].typer); //ret: typer: id ... typer: collname
+       //console.log(titlefields[i]); //ret: id name,created_at, operations
+       //console.log("typer: "+titles[k].typer); //ret: typer: id ... typer: 
     });
-//*/    
+*/    
