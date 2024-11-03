@@ -96,11 +96,13 @@ public function gemodo_calc(){
      $alphaArray=array_merge($arrI,$arrII,$arrIII,$arrIV,$arrV,$arrVI,$arrVII,$arrVIII,$arrIX);
      $numTxtInputVal=$this->calcJewGema($txtInputVal);
      $somatorium=$numTxtInputVal+$sumTotal;
+     $gemCalc="";
      $vrd['results']="<span> $txtInputVal - $numTxtInputVal </span><br>";
      $vrd['results'].="<span> Soma - $sumTotal </span><br>";
-     $vrd['results'].=$this->calcGemNumbers($alphaArray,$somatorium,'Resultado');
-
-     
+     $gemCalc=$this->calcGemNumbers($alphaArray,$somatorium,'Resultado');
+     $table="<table class='table-bordered'>";
+     $tableEnd="</table><br>";
+     $vrd['results'].=$table.$gemCalc.$tableEnd;
      
      $tt['title']="...Gemmodo...";
      $vrd['sum1']=$inp['sum1'];
@@ -632,22 +634,30 @@ private function calcSumsIn2($str){
 
 //===============================
 private function calcGemNumbers($arr,$sum,$result='Result'){
-     $acumul='.............................<br>'; 
+   
+     $tr="<tr>"; $endTr="</tr>";
+     $td="<td>"; $endTd="</td>";
+    // $tagAberta=false;
+    $class="<span class='btn-outline-info'>";
+    $endClass="</span>";
      $nn=0; 
      $tmpGem=0;
      $sumDeDois='';
+     $acumul=$tr;
      foreach ($arr as $key => $value) {
           $nn++;
           $tmpGem=$this->calcJewGema($value);
-          $acumul.=$key."__".$value."__";
-          $acumul.="__".$tmpGem."__.<br>";
+          $acumul.=$td;
+          $acumul.=$class.$key."-".$value."";
+          $acumul.=" (".$tmpGem.")".$endClass."<br>";
           $tmpGem+=$sum;
           $sumDeDois=$this->calcSumsIn2((string)$tmpGem);
-          $acumul.="__".$result."__".(string)$tmpGem."__".$sumDeDois."__"."<br>";
-          $acumul.="............................<br>";
+          $acumul.="".$result.": ".(string)$tmpGem."<br>".$sumDeDois."";
+          $acumul.=$endTd;
           $tmpGem=0;
-          //if (($nn % 2)==0) {$acumul.="<br>"; }
+          if (($nn % 3)==0) {$acumul.=$endTr.$tr;   }
       }
+      $acumul.=$endTr;
       return $acumul;
 }
 //===============================
