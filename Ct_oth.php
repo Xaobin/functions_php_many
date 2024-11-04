@@ -1,13 +1,15 @@
 <?php
 namespace App\Controllers;
-
+ini_set('error_reporting', E_ALL & ~E_DEPRECATED);
 class Ct_oth extends BaseController{
 
   public function __construct() {
 
     $secObj = new \App\Models\classes\Security_class();
 			$secObj->security_step();
-		}
+     $this->primArray=[];
+  }
+ 
 //===============================
   public function gtrix(){
     $tt['title']="Gtrix";
@@ -97,13 +99,19 @@ public function gemodo_calc(){
      $numTxtInputVal=$this->calcJewGema($txtInputVal);
      $somatorium=$numTxtInputVal+$sumTotal;
      $gemCalc="";
-     $vrd['results']="<span> $txtInputVal - $numTxtInputVal </span><br>";
-     $vrd['results'].="<span> Soma - $sumTotal </span><br>";
+     $class="<span class='btn-outline-success'>";
+     $endClass="</span>";
+     $vrd['results']=$class."<span> $txtInputVal - $numTxtInputVal </span><br>";
+     $vrd['results'].="<span> Soma - $sumTotal </span><br>".$endClass;
      $gemCalc=$this->calcGemNumbers($alphaArray,$somatorium,'Resultado');
      $table="<table class='table-bordered'>";
      $tableEnd="</table><br>";
      $vrd['results'].=$table.$gemCalc.$tableEnd;
-     
+     //$vrd['results'].="<br>".print_r($this->primArray);
+     $ttt=$this->viewEquals($this->primArray);
+    // $aTable=$this->printArrayInTable($ttt);
+     $vrd['results'].="<br>".var_dump($ttt);
+
      $tt['title']="...Gemmodo...";
      $vrd['sum1']=$inp['sum1'];
      $vrd['sum2']=$inp['sum2'];
@@ -117,6 +125,101 @@ public function gemodo_calc(){
      echo view('app/oth/gmodo',$vrd);
      echo view('layout/footer');
 }
+//===============================
+//===============================
+//===============================
+//===============================
+//===============================
+//===============================
+private function viewEquals($arr){
+     //$arr_equal=[];
+     $tmp=[];
+     $vv='';
+     $sinalize=false;
+     $separa="@@z";
+     foreach ($arr as $key => $value) {
+          $tmp=array_keys($arr,$value);
+          //echo "___". ($tmp[0]);
+          if ( isset($tmp[0]) ){ 
+               $tmp2=$separa.$value;
+               echo "--(".$tmp2.")--";
+               if  (substr_count($vv,$tmp2)>=1) {
+                    $sinalize=true;
+                } 
+                else{ $sinalize=false; }
+            }
+        if ($sinalize=false){
+          if (isset($tmp[0])){ $vv.=$tmp[0].$separa; }
+          if (isset($tmp[1])){ $vv.=$tmp[1].$separa; }
+          if (isset($tmp[2])){ $vv.=$tmp[2].$separa; }
+          if (isset($tmp[3])){ $vv.=$tmp[3].$separa; }
+       }
+     }   
+     echo "___[ ".$vv." ]___";  
+     $arrX=explode($separa,$vv);
+     return $arrX;
+}
+//===============================
+//===============================
+//===============================
+//===============================
+//===============================
+//===============================
+private function printArrayInTable($arr){
+     $table="<table class='table-bordered'>";
+     $tableEnd="</table><br>";
+     $tr="<tr>"; $endTr="</tr>";
+     $td="<td>"; $endTd="</td>";
+     $nn=0;
+     $acc='';
+    // $tagAberta=false;
+     $acc.=$tr; 
+     foreach ($arr as $key => $value) {
+          $acc.=$td.$key."<br>";
+          $acc.=$value.$endTd;
+          if (($nn % 3)==0) {$acc.=$endTr.$tr;   }
+         
+     }
+      $acc.=$endTr.$tableEnd;
+     return $acc;
+     
+}
+//===============================
+//===============================
+//===============================
+//===============================
+//===============================
+//===============================
+private function calcGemNumbers($arr,$sum,$result='Result'){
+   
+     $tr="<tr>"; $endTr="</tr>";
+     $td="<td>"; $endTd="</td>";
+    // $tagAberta=false;
+    $class="<span class='btn-outline-info'>";
+    $endClass="</span>";
+     $nn=0; 
+     $tmpGem=0;
+     $sumDeDois='';
+     $acumul=$tr;
+     foreach ($arr as $key => $value) {
+          $nn++;
+          $tmpGem=$this->calcJewGema($value);
+          $acumul.=$td;
+          $acumul.=$class.$key."-".$value."";
+          $acumul.=" (".$tmpGem.")".$endClass."<br>";
+          $tmpGem+=$sum;
+          $sumDeDois=$this->calcSumsIn2((string)$tmpGem);
+          $acumul.="".$result.": ".(string)$tmpGem."<br>".$sumDeDois."";
+          $acumul.=$endTd;
+          
+          if (($nn % 3)==0) {$acumul.=$endTr.$tr;   }
+          $this->primArray[$key]=$sumDeDois;
+          $tmpGem=0;
+      }
+      $acumul.=$endTr;
+      return $acumul;
+}
+//===============================
 //===============================
 //===============================
 //===============================
@@ -632,35 +735,7 @@ private function calcSumsIn2($str){
 //===============================
 //===============================
 
-//===============================
-private function calcGemNumbers($arr,$sum,$result='Result'){
-   
-     $tr="<tr>"; $endTr="</tr>";
-     $td="<td>"; $endTd="</td>";
-    // $tagAberta=false;
-    $class="<span class='btn-outline-info'>";
-    $endClass="</span>";
-     $nn=0; 
-     $tmpGem=0;
-     $sumDeDois='';
-     $acumul=$tr;
-     foreach ($arr as $key => $value) {
-          $nn++;
-          $tmpGem=$this->calcJewGema($value);
-          $acumul.=$td;
-          $acumul.=$class.$key."-".$value."";
-          $acumul.=" (".$tmpGem.")".$endClass."<br>";
-          $tmpGem+=$sum;
-          $sumDeDois=$this->calcSumsIn2((string)$tmpGem);
-          $acumul.="".$result.": ".(string)$tmpGem."<br>".$sumDeDois."";
-          $acumul.=$endTd;
-          $tmpGem=0;
-          if (($nn % 3)==0) {$acumul.=$endTr.$tr;   }
-      }
-      $acumul.=$endTr;
-      return $acumul;
-}
-//===============================
+
 //===============================
 //===============================
 //===============================
