@@ -109,8 +109,8 @@ public function gemodo_calc(){
      $vrd['results'].=$table.$gemCalc.$tableEnd;
      //$vrd['results'].="<br>".print_r($this->primArray);
      $ttt=$this->viewEquals($this->primArray);
-    // $aTable=$this->printArrayInTable($ttt);
-     $vrd['results'].="<br>".var_dump($ttt);
+     $aaa=$this->printArray($ttt);
+     $vrd['results'].="<br>".$aaa;
 
      $tt['title']="...Gemmodo...";
      $vrd['sum1']=$inp['sum1'];
@@ -137,25 +137,23 @@ private function viewEquals($arr){
      $vv='';
      $sinalize=false;
      $separa="@@z";
+     $tmp2='';
+     $contaQ=0;
+     $con=-1;
+	$br="<br>";
      foreach ($arr as $key => $value) {
-          $tmp=array_keys($arr,$value);
-          //echo "___". ($tmp[0]);
-          if ( isset($tmp[0]) ){ 
-               $tmp2=$separa.$value;
-               echo "--(".$tmp2.")--";
-               if  (substr_count($vv,$tmp2)>=1) {
-                    $sinalize=true;
-                } 
-                else{ $sinalize=false; }
-            }
-        if ($sinalize=false){
-          if (isset($tmp[0])){ $vv.=$tmp[0].$separa; }
-          if (isset($tmp[1])){ $vv.=$tmp[1].$separa; }
-          if (isset($tmp[2])){ $vv.=$tmp[2].$separa; }
-          if (isset($tmp[3])){ $vv.=$tmp[3].$separa; }
-       }
+          $tmp2=$separa.$key; 
+		  $siz= sizeof($arr);
+		  for ($i = 0; $i <= $siz-1; $i++) { 
+				if (($key!=$i)and($value==$arr[$i])){ 	
+					$contaQ++;
+					$con=substr_count($vv,$tmp2);
+					if  ($con==0) { $vv.=$tmp2; }  
+				}
+		  }		
      }   
-     echo "___[ ".$vv." ]___";  
+    // echo "Conta Q:".$contaQ."<br>";
+   //  echo "xxx[ ".$vv." ]xxx";  
      $arrX=explode($separa,$vv);
      return $arrX;
 }
@@ -171,16 +169,41 @@ private function printArrayInTable($arr){
      $tr="<tr>"; $endTr="</tr>";
      $td="<td>"; $endTd="</td>";
      $nn=0;
-     $acc='';
+     $acc=$table;
     // $tagAberta=false;
      $acc.=$tr; 
      foreach ($arr as $key => $value) {
-          $acc.=$td.$key."<br>";
+          $nn++;
+          $acc.=$td." ";
           $acc.=$value.$endTd;
-          if (($nn % 3)==0) {$acc.=$endTr.$tr;   }
+          if (($nn % 10)==0) {$acc.=$endTr.$tr;   }
          
      }
       $acc.=$endTr.$tableEnd;
+     return $acc;
+     
+}
+//===============================
+//===============================
+//===============================
+//===============================
+//===============================
+//===============================
+private function printArray($arr){
+     
+     $nn=0;
+     $br="<br>";
+     $acc=''; 
+    // $sizz=sizeof($arr);
+    // $sizz--;
+     foreach ($arr as $key => $value) {
+          $nn++;
+          //if ($sizz!=$key){$acc.=$value." - ";}
+          //else {$acc.=$value;}
+          $acc.=$value." - ";
+          if (($nn % 20)==0) {$acc.=$br;   }
+         
+     }
      return $acc;
      
 }
